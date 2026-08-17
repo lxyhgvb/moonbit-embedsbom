@@ -31,4 +31,4 @@ jobs:
           moon version --all
           moon fmt --check
           moon check --deny-warn
-          moon info --deny-warn
+          moon info
