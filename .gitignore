@@ -4,3 +4,7 @@ target/
 target
 .mooncakes/
 .moonagent/
+
+# Local Declaration Documents
+project_declaration.md
+项目申报书.md
