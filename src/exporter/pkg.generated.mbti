@@ -1,0 +1,27 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-embedsbom/src/exporter"
+
+import {
+  "lxyhgvb/moonbit-embedsbom/src/analyzer",
+  "lxyhgvb/moonbit-embedsbom/src/graph",
+  "lxyhgvb/moonbit-embedsbom/src/types",
+}
+
+// Values
+pub fn export_ascii_graph(@graph.DependencyGraph, root_id? : String) -> String
+
+pub fn export_csv_table(@types.SbomDocument) -> String
+
+pub fn export_cyclonedx_json(@types.SbomDocument, pretty? : Bool) -> String
+
+pub fn export_markdown_report(@types.SbomDocument, @analyzer.AuditReport) -> String
+
+pub fn export_spdx_json(@types.SbomDocument, pretty? : Bool) -> String
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

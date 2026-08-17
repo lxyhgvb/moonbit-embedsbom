@@ -1,0 +1,58 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-embedsbom/src/analyzer"
+
+import {
+  "lxyhgvb/moonbit-embedsbom/src/types",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn analyze_licenses(@types.SbomDocument) -> Array[LicenseIssue]
+
+pub fn is_license_compatible(@types.LicenseCategory, @types.LicenseCategory) -> Bool
+
+pub fn lint_versions(@types.SbomDocument) -> Array[VersionIssue]
+
+pub fn match_vulnerabilities(@types.SbomDocument, Array[@types.Vulnerability]) -> Array[VulnerabilityMatch]
+
+pub fn run_full_audit(@types.SbomDocument, vuln_db? : Array[@types.Vulnerability]) -> AuditReport
+
+// Errors
+
+// Types and methods
+pub(all) struct AuditReport {
+  document_id : String
+  document_name : String
+  embedded_info : @types.EmbeddedInfo
+  license_issues : Array[LicenseIssue]
+  version_issues : Array[VersionIssue]
+  vulnerabilities : Array[VulnerabilityMatch]
+  cycles : Array[Array[String]]
+  duplicate_packages : Map[String, Array[String]]
+  is_compliant : Bool
+} derive(Eq, @debug.Debug)
+
+pub(all) struct LicenseIssue {
+  component_id : String
+  license_id : String
+  category : @types.LicenseCategory
+  issue_type : String
+  description : String
+} derive(Eq, @debug.Debug)
+
+pub(all) struct VersionIssue {
+  component_id : String
+  version : String
+  issue_type : String
+  description : String
+} derive(Eq, @debug.Debug)
+
+pub(all) struct VulnerabilityMatch {
+  component_id : String
+  component_name : String
+  vulnerability : @types.Vulnerability
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
