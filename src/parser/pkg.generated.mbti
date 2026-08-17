@@ -9,6 +9,10 @@ import {
 // Values
 pub fn extract_kv_pair(String) -> (String, String)?
 
+pub fn extract_version_from_c_header(Array[ParsedCHeaderMacro]) -> String
+
+pub fn parse_c_header_macros(String) -> Array[ParsedCHeaderMacro]
+
 pub fn parse_embedded_manifest(String) -> Array[EmbeddedManifestEntry]
 
 pub fn parse_firmware_spec(String) -> @types.EmbeddedInfo
@@ -42,6 +46,11 @@ pub(all) struct LockedPackage {
   source : String
 } derive(Eq, @debug.Debug)
 pub fn LockedPackage::to_component(Self) -> @types.Component
+
+pub(all) struct ParsedCHeaderMacro {
+  name : String
+  value : String
+} derive(Eq, @debug.Debug)
 
 pub(all) struct ParsedMoonMod {
   mut name : String

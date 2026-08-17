@@ -14,9 +14,15 @@ pub fn export_csv_table(@types.SbomDocument) -> String
 
 pub fn export_cyclonedx_json(@types.SbomDocument, pretty? : Bool) -> String
 
+pub fn export_html_report(@types.SbomDocument, @analyzer.AuditReport) -> String
+
 pub fn export_markdown_report(@types.SbomDocument, @analyzer.AuditReport) -> String
 
 pub fn export_spdx_json(@types.SbomDocument, pretty? : Bool) -> String
+
+pub fn generate_cyclonedx_json_schema() -> String
+
+pub fn generate_spdx_json_schema() -> String
 
 pub fn validate_cyclonedx_json_spec(String) -> Array[String]
 

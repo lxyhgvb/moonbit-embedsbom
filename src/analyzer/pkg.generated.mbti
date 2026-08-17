@@ -9,6 +9,8 @@ import {
 // Values
 pub fn analyze_licenses(@types.SbomDocument) -> Array[LicenseIssue]
 
+pub fn compute_security_scan_summary(Array[VulnerabilityMatch]) -> SecurityScanSummary
+
 pub fn get_embedded_vulnerability_database() -> Array[@types.Vulnerability]
 
 pub fn is_license_compatible(@types.LicenseCategory, @types.LicenseCategory) -> Bool
@@ -34,12 +36,56 @@ pub(all) struct AuditReport {
   is_compliant : Bool
 } derive(Eq, @debug.Debug)
 
+pub(all) struct CvssVectorDescriptor {
+  attack_vector : String
+  attack_complexity : String
+  privileges_required : String
+  user_interaction : String
+  scope : String
+  confidentiality : String
+  integrity : String
+  availability : String
+} derive(Eq, @debug.Debug)
+pub fn CvssVectorDescriptor::new(attack_vector? : String, attack_complexity? : String, privileges_required? : String, user_interaction? : String, scope? : String, confidentiality? : String, integrity? : String, availability? : String) -> Self
+pub fn CvssVectorDescriptor::to_vector_string(Self) -> String
+
 pub(all) struct LicenseIssue {
   component_id : String
   license_id : String
   category : @types.LicenseCategory
   issue_type : String
   description : String
+} derive(Eq, @debug.Debug)
+
+pub(all) enum LicensePolicyAction {
+  Allow
+  Deny
+  RequireReview
+} derive(Eq, @debug.Debug)
+
+pub(all) struct LicensePolicyEngine {
+  allowed_licenses : Array[String]
+  denied_licenses : Array[String]
+  rules : Array[LicensePolicyRule]
+} derive(Eq, @debug.Debug)
+pub fn LicensePolicyEngine::audit_document(Self, @types.SbomDocument) -> Array[LicenseIssue]
+pub fn LicensePolicyEngine::evaluate_component(Self, @types.Component) -> (LicensePolicyAction, String)
+pub fn LicensePolicyEngine::new_strict_embedded_policy() -> Self
+
+pub(all) struct LicensePolicyRule {
+  target : String
+  action : LicensePolicyAction
+  reason : String
+} derive(Eq, @debug.Debug)
+
+pub(all) struct SecurityScanSummary {
+  total_vulnerabilities : Int
+  critical_count : Int
+  high_count : Int
+  medium_count : Int
+  low_count : Int
+  fixable_count : Int
+  max_cvss_score : Double
 } derive(Eq, @debug.Debug)
 
 pub(all) struct VersionIssue {
