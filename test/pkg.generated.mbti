@@ -1,0 +1,13 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-embedsbom/test"
+
+// Values
+pub fn run_integration_pipeline() -> Bool
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits

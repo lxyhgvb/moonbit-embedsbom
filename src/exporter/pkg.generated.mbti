@@ -18,6 +18,10 @@ pub fn export_markdown_report(@types.SbomDocument, @analyzer.AuditReport) -> Str
 
 pub fn export_spdx_json(@types.SbomDocument, pretty? : Bool) -> String
 
+pub fn validate_cyclonedx_json_spec(String) -> Array[String]
+
+pub fn validate_spdx_json_spec(String) -> Array[String]
+
 // Errors
 
 // Types and methods

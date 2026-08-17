@@ -9,6 +9,8 @@ import {
 // Values
 pub fn analyze_licenses(@types.SbomDocument) -> Array[LicenseIssue]
 
+pub fn get_embedded_vulnerability_database() -> Array[@types.Vulnerability]
+
 pub fn is_license_compatible(@types.LicenseCategory, @types.LicenseCategory) -> Bool
 
 pub fn lint_versions(@types.SbomDocument) -> Array[VersionIssue]

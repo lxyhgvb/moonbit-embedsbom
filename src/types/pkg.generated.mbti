@@ -8,6 +8,8 @@ import {
 // Values
 pub fn classify_spdx_license(String) -> LicenseCategory
 
+pub fn get_hardware_preset(String) -> EmbeddedInfo
+
 pub fn resolve_license_info(String) -> LicenseInfo
 
 // Errors
