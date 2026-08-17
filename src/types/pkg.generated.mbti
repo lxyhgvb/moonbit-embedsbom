@@ -1,0 +1,158 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-embedsbom/src/types"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn classify_spdx_license(String) -> LicenseCategory
+
+pub fn resolve_license_info(String) -> LicenseInfo
+
+// Errors
+
+// Types and methods
+pub(all) struct Component {
+  id : String
+  name : String
+  version : String
+  supplier : String
+  license_id : String
+  homepage : String
+  repository : String
+  checksums : Map[String, String]
+  component_type : ComponentType
+  embedded_info : EmbeddedInfo
+  dependencies : Array[String]
+  description : String
+} derive(Eq, @debug.Debug)
+pub fn Component::add_checksum(Self, HashAlgorithm, String) -> Unit
+pub fn Component::has_license(Self) -> Bool
+pub fn Component::has_valid_version(Self) -> Bool
+pub fn Component::new(id? : String, name~ : String, version? : String, supplier? : String, license_id? : String, homepage? : String, repository? : String, component_type? : ComponentType, embedded_info? : EmbeddedInfo, dependencies? : Array[String], description? : String) -> Self
+pub fn Component::to_display_string(Self) -> String
+
+pub(all) enum ComponentType {
+  Firmware
+  Driver
+  RtosKernel
+  MoonBitPkg
+  CLib
+  Bootloader
+  HardwareBsp
+  ThirdPartyLib
+} derive(Eq, @debug.Debug)
+pub fn ComponentType::from_string(String) -> Self
+pub fn ComponentType::to_string(Self) -> String
+
+pub(all) struct DependencyRelation {
+  parent_id : String
+  child_id : String
+  relation_type : RelationType
+  comment : String
+} derive(Eq, @debug.Debug)
+
+pub(all) struct EmbeddedInfo {
+  mcu_arch : String
+  firmware_version : String
+  build_target : String
+  bootloader_version : String
+  board_model : String
+  binary_hash : String
+  flash_size_kb : Int
+  ram_size_kb : Int
+  toolchain_version : String
+} derive(Eq, @debug.Debug)
+pub fn EmbeddedInfo::calc_flash_utilization(Self, Int) -> Double
+pub fn EmbeddedInfo::format_summary(Self) -> String
+pub fn EmbeddedInfo::is_arm_arch(Self) -> Bool
+pub fn EmbeddedInfo::is_esp32_arch(Self) -> Bool
+pub fn EmbeddedInfo::is_riscv_arch(Self) -> Bool
+pub fn EmbeddedInfo::new(mcu_arch? : String, firmware_version? : String, build_target? : String, bootloader_version? : String, board_model? : String, binary_hash? : String, flash_size_kb? : Int, ram_size_kb? : Int, toolchain_version? : String) -> Self
+
+pub(all) enum HashAlgorithm {
+  SHA256
+  SHA1
+  MD5
+  CRC32
+} derive(Eq, @debug.Debug)
+pub fn HashAlgorithm::to_string(Self) -> String
+
+pub(all) enum LicenseCategory {
+  Permissive
+  WeakCopyleft
+  StrongCopyleft
+  Commercial
+  Proprietary
+  Dual
+  Unknown
+} derive(Eq, @debug.Debug)
+pub fn LicenseCategory::to_string(Self) -> String
+
+pub(all) struct LicenseInfo {
+  spdx_id : String
+  name : String
+  category : LicenseCategory
+  is_approved : Bool
+  url : String
+  notes : String
+} derive(Eq, @debug.Debug)
+pub fn LicenseInfo::new(spdx_id~ : String, name? : String, category? : LicenseCategory, is_approved? : Bool, url? : String, notes? : String) -> Self
+
+pub(all) enum RelationType {
+  DependsOn
+  BuildDependencyOf
+  IncludedIn
+  OptionalDependency
+  RuntimeDependencyOf
+} derive(Eq, @debug.Debug)
+pub fn RelationType::to_string(Self) -> String
+
+pub(all) struct SbomDocument {
+  id : String
+  name : String
+  doc_namespace : String
+  version : String
+  creator : String
+  created_at : String
+  embedded_info : EmbeddedInfo
+  components : Array[Component]
+  relationships : Array[DependencyRelation]
+  vulnerabilities : Array[Vulnerability]
+} derive(Eq, @debug.Debug)
+pub fn SbomDocument::add_component(Self, Component) -> Unit
+pub fn SbomDocument::add_relation(Self, String, String, relation_type? : RelationType, comment? : String) -> Unit
+pub fn SbomDocument::add_vulnerability(Self, Vulnerability) -> Unit
+pub fn SbomDocument::component_count(Self) -> Int
+pub fn SbomDocument::filter_by_type(Self, ComponentType) -> Array[Component]
+pub fn SbomDocument::find_component_by_id(Self, String) -> Component?
+pub fn SbomDocument::has_high_vulnerabilities(Self) -> Bool
+pub fn SbomDocument::new(id? : String, name? : String, doc_namespace? : String, version? : String, creator? : String, created_at? : String, embedded_info? : EmbeddedInfo) -> Self
+
+pub(all) struct Vulnerability {
+  cve_id : String
+  summary : String
+  severity : VulnerabilitySeverity
+  cvss_score : Double
+  affected_component : String
+  affected_versions : String
+  fixed_version : String
+  reference_url : String
+} derive(Eq, @debug.Debug)
+pub fn Vulnerability::format_summary(Self) -> String
+pub fn Vulnerability::is_critical_or_high(Self) -> Bool
+pub fn Vulnerability::new(cve_id~ : String, summary? : String, severity? : VulnerabilitySeverity, cvss_score? : Double, affected_component? : String, affected_versions? : String, fixed_version? : String, reference_url? : String) -> Self
+
+pub(all) enum VulnerabilitySeverity {
+  Critical
+  High
+  Medium
+  Low
+  Info
+} derive(Eq, @debug.Debug)
+pub fn VulnerabilitySeverity::to_string(Self) -> String
+
+// Type aliases
+
+// Traits
