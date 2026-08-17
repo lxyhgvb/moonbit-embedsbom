@@ -72,27 +72,8 @@ moonbit-embedsbom/
 
 ## 📊 MoonBit 源码规模与来源声明
 
-### 代码规模真实核算 (Strict Code Metrics Audit)
-
-本工程完全使用 **MoonBit** 编写。在剔除编译器构建产物（`_build/` 目录）与自动生成接口描述文件（`.mbti`）后，**手写 MoonBit 源码真实统计**如下：
-
-| 包路径 (Package Directory) | 源文件数 | 核心功能 (Description) | 真实总行数 (Total Lines) | 非空行数 (Non-Empty) |
-|---|---|---|---|---|
-| `src/types/` | 10 | 核心数据结构、嵌入式元数据、SPDX/CycloneDX 类型、硬件 Catalog | **1,027 行** | 972 行 |
-| `src/utils/` | 4 | JSON AST 引擎、字符串格式化、CRC32/SHA256 校验和 | **390 行** | 369 行 |
-| `src/parser/` | 7 | `moon.mod` / `moon.lock` / 嵌入式 Manifest / C Header 解析器 | **726 行** | 682 行 |
-| `src/graph/` | 5 | 依赖图、Tarjan 环检测、路径求解、图分析 | **454 行** | 406 行 |
-| `src/analyzer/` | 8 | 许可证合规矩阵、策略引擎、版本 Linter、CVE 匹配、CVSS Vector | **428 行** | 398 行 |
-| `src/exporter/` | 10 | SPDX 2.3 / CycloneDX 1.5 / HTML / Markdown / ASCII / JSON Schema 导出 | **741 行** | 686 行 |
-| `src/cli/` | 5 | CLI 命令行选项、命令执行器、Runner 交互 | **491 行** | 468 行 |
-| `test/` & `cmd/` | 7 | 端到端集成测试套件与主程序入口 | **141 行** | 124 行 |
-| **真实手写源码总计** | **56 个文件** | **纯手写 MoonBit `.mbt` 源码总计** | **`4,398 行`** | **`4,105 行`** |
-
-> 校验指令：在项目根目录下排除 `_build/` 和 `.mbti` 后核算 `4,398 行`（非空行 `4,105 行`，纯逻辑代码行 `3,737 行`），真实无虚报，完全满足且高于组委会 4000 行基础要求。
-
-### 源码来源说明 (Origin Statement)
-
-本仓库 `moonbit-embedsbom` 所有 MoonBit 代码均为参赛者**100% 原创编写**，面向 2026 CCF / MoonBit 国产基础软件开源生态贡献赛制作，未直接复制或抄袭第三方成熟生态仓库，无合规与版权风险。
+- **代码规模**：工程基于 **MoonBit 0.10.x** 原生开发，包含 56 个手写 `.mbt` 源文件，手写源码规模达 **4,398 行**（非空行 `4,105 行`，已严格排除 `_build/` 编译产物与 `.mbti` 描述文件），完全符合比赛要求。
+- **开源声明**：本仓库 `moonbit-embedsbom` 所有 MoonBit 代码均为参赛者 **100% 原创编写**，面向 2026 CCF / MoonBit 国产基础软件开源生态贡献赛制作，无第三方合规与版权风险。
 
 ---
 
