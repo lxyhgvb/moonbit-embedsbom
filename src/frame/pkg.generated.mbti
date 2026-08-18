@@ -1,0 +1,82 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-radioframe/src/frame"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn decode_mac_frame(Bytes) -> Result[MacFrame, String]
+
+pub fn encode_mac_frame(MacFrame) -> Result[Bytes, String]
+
+// Errors
+
+// Types and methods
+pub(all) enum AddressMode {
+  None
+  Short16
+  Extended64
+} derive(Eq, @debug.Debug)
+
+pub(all) struct AuxSecurityHeader {
+  security_level : Int
+  key_id_mode : Int
+  frame_counter : UInt
+  key_source : Bytes
+  key_index : Int
+} derive(Eq, @debug.Debug)
+pub fn AuxSecurityHeader::encode(Self) -> Bytes
+pub fn AuxSecurityHeader::new(security_level? : Int, key_id_mode? : Int, frame_counter? : UInt, key_source? : Bytes, key_index? : Int) -> Self
+
+pub(all) struct FrameControlField {
+  frame_type : FrameType
+  security_enabled : Bool
+  frame_pending : Bool
+  ack_request : Bool
+  pan_id_compression : Bool
+  sequence_number_suppress : Bool
+  dest_addr_mode : AddressMode
+  frame_version : Int
+  src_addr_mode : AddressMode
+} derive(Eq, @debug.Debug)
+pub fn FrameControlField::from_u16(UInt) -> Self
+pub fn FrameControlField::new(frame_type? : FrameType, security_enabled? : Bool, frame_pending? : Bool, ack_request? : Bool, pan_id_compression? : Bool, sequence_number_suppress? : Bool, dest_addr_mode? : AddressMode, frame_version? : Int, src_addr_mode? : AddressMode) -> Self
+pub fn FrameControlField::to_u16(Self) -> UInt
+
+pub(all) enum FrameType {
+  Beacon
+  Data
+  Ack
+  MacCmd
+  Reserved(Int)
+} derive(Eq, @debug.Debug)
+
+pub(all) enum MacAddress {
+  NoneAddress
+  ShortAddress(UInt)
+  ExtendedAddress(UInt64)
+  BroadcastAddress
+} derive(Eq, @debug.Debug)
+pub fn MacAddress::to_address_mode(Self) -> AddressMode
+
+pub(all) struct MacFrame {
+  header : MacFrameHeader
+  payload : Bytes
+  fcs : UInt
+} derive(Eq, @debug.Debug)
+pub fn MacFrame::new(MacFrameHeader, Bytes, fcs? : UInt) -> Self
+
+pub(all) struct MacFrameHeader {
+  fcf : FrameControlField
+  seq_num : Int
+  dest_pan_id : UInt?
+  dest_addr : MacAddress
+  src_pan_id : UInt?
+  src_addr : MacAddress
+  aux_sec : AuxSecurityHeader?
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
