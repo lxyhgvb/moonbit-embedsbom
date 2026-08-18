@@ -1,26 +1,22 @@
-// Learn more about moon.mod configuration:
-// https://docs.moonbitlang.com/en/latest/toolchain/moon/module.html
-//
-// To add a dependency, run this command in your terminal:
-//   moon add moonbitlang/x
-//
-// Or manually declare it in `import`, for example:
-// import {
-//   "moonbitlang/x@0.4.6",
-// }
-
-name = "lxyhgvb/moonbit-embedsbom"
+name = "lxyhgvb/moonbit-radioframe"
 
 version = "0.1.0"
 
-readme = "README.mbt.md"
+readme = "README.md"
 
-repository = ""
+repository = "https://github.com/lxyhgvb/moonbit-radioframe"
 
 license = "Apache-2.0"
 
-keywords = [ ]
+keywords = [
+  "wireless",
+  "ieee802154",
+  "frame",
+  "simulation",
+  "bitstream",
+  "mac",
+]
 
 preferred_target = "wasm"
 
-description = ""
+description = "MoonBit Wireless Frame & Link Simulation Toolkit for IEEE 802.15.4 and low-power IoT protocols"

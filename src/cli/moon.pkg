@@ -1,7 +1,0 @@
-import {
-  "lxyhgvb/moonbit-embedsbom/src/types",
-  "lxyhgvb/moonbit-embedsbom/src/parser",
-  "lxyhgvb/moonbit-embedsbom/src/graph",
-  "lxyhgvb/moonbit-embedsbom/src/analyzer",
-  "lxyhgvb/moonbit-embedsbom/src/exporter",
-}

@@ -1,5 +1,0 @@
-import {
-  "lxyhgvb/moonbit-embedsbom/src/cli",
-}
-
-pkgtype(kind: "executable")

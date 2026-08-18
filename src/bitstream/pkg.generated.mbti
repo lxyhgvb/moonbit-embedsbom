@@ -1,0 +1,64 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-radioframe/src/bitstream"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) enum BitOrder {
+  MsbFirst
+  LsbFirst
+} derive(Eq, @debug.Debug)
+
+pub(all) struct BitPosition {
+  byte_offset : Int
+  bit_offset : Int
+} derive(Eq, @debug.Debug)
+
+pub(all) struct BitReader {
+  buffer : Bytes
+  mut bit_pos : Int
+  order : BitOrder
+}
+pub fn BitReader::align_to_byte(Self) -> Unit
+pub fn BitReader::from_array(Array[Byte], order? : BitOrder) -> Self
+pub fn BitReader::get_position(Self) -> BitPosition
+pub fn BitReader::is_aligned(Self) -> Bool
+pub fn BitReader::new(Bytes, order? : BitOrder) -> Self
+pub fn BitReader::peek_u32(Self, Int) -> Result[UInt, BitStreamError]
+pub fn BitReader::read_bit(Self) -> Result[Bool, BitStreamError]
+pub fn BitReader::read_bytes(Self, Int) -> Result[Bytes, BitStreamError]
+pub fn BitReader::read_u32(Self, Int) -> Result[UInt, BitStreamError]
+pub fn BitReader::read_u64(Self, Int) -> Result[UInt64, BitStreamError]
+pub fn BitReader::remaining_bits(Self) -> Int
+pub fn BitReader::set_position(Self, BitPosition) -> Unit
+
+pub(all) enum BitStreamError {
+  OutOfBounds(Int, Int)
+  InvalidBitWidth(Int)
+  BufferOverflow
+} derive(Eq, @debug.Debug)
+
+pub(all) struct BitWriter {
+  buffer : Array[Byte]
+  mut bit_pos : Int
+  order : BitOrder
+}
+pub fn BitWriter::align_to_byte(Self, fill_with_ones? : Bool) -> Unit
+pub fn BitWriter::get_bit_count(Self) -> Int
+pub fn BitWriter::get_byte_count(Self) -> Int
+pub fn BitWriter::new(capacity? : Int, order? : BitOrder) -> Self
+pub fn BitWriter::to_bytes(Self) -> Bytes
+pub fn BitWriter::write_bit(Self, Bool) -> Result[Unit, BitStreamError]
+pub fn BitWriter::write_bytes(Self, Bytes) -> Result[Unit, BitStreamError]
+pub fn BitWriter::write_u32(Self, UInt, Int) -> Result[Unit, BitStreamError]
+pub fn BitWriter::write_u64(Self, UInt64, Int) -> Result[Unit, BitStreamError]
+
+// Type aliases
+
+// Traits
