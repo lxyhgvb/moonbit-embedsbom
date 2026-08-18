@@ -1,0 +1,30 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-radioframe/src/cli"
+
+import {
+  "lxyhgvb/moonbit-radioframe/src/frame",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn bytes_to_hex(Bytes) -> String
+
+pub fn format_mac_frame_summary(@frame.MacFrame) -> String
+
+pub fn hex_to_bytes(String) -> Result[Bytes, String]
+
+pub fn run_cli_simulation(CliSimulationConfig) -> String
+
+// Errors
+
+// Types and methods
+pub(all) struct CliSimulationConfig {
+  node_count : Int
+  loss_rate_ppm : Int
+  duration_steps : Int
+} derive(Eq, @debug.Debug)
+pub fn CliSimulationConfig::default() -> Self
+
+// Type aliases
+
+// Traits
