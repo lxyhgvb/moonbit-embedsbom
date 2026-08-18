@@ -1,0 +1,70 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-radioframe/src/channel"
+
+import {
+  "lxyhgvb/moonbit-radioframe/src/frame",
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct ChannelConfig {
+  loss_rate_ppm : Int
+  duplicate_rate_ppm : Int
+  reorder_rate_ppm : Int
+  base_latency_ms : UInt64
+  jitter_ms : UInt64
+  enable_collision : Bool
+  collision_window_ms : UInt64
+} derive(Eq, @debug.Debug)
+pub fn ChannelConfig::ideal() -> Self
+pub fn ChannelConfig::typical_iot() -> Self
+
+pub(all) enum ChannelOutcome {
+  Delivered(TransmissionEvent)
+  DroppedLoss
+  DroppedCollision
+  CorruptedIntegrity
+  PendingInQueue
+} derive(Eq, @debug.Debug)
+
+pub(all) struct ChannelSimulator {
+  config : ChannelConfig
+  queue : Array[TransmissionEvent]
+  mut next_frame_id : UInt
+  mut rng_state : UInt
+  stats : ChannelStats
+} derive(Eq, @debug.Debug)
+pub fn ChannelSimulator::new(ChannelConfig, seed? : UInt) -> Self
+pub fn ChannelSimulator::step(Self, UInt64) -> Array[TransmissionEvent]
+pub fn ChannelSimulator::transmit_bytes(Self, Bytes, UInt, UInt, UInt64) -> ChannelOutcome
+pub fn ChannelSimulator::transmit_mac_frame(Self, @frame.MacFrame, UInt, UInt, UInt64) -> Result[ChannelOutcome, String]
+
+pub(all) struct ChannelStats {
+  mut total_sent : Int
+  mut total_delivered : Int
+  mut total_dropped : Int
+  mut total_duplicated : Int
+  mut total_reordered : Int
+  mut total_collisions : Int
+} derive(Eq, @debug.Debug)
+pub fn ChannelStats::delivery_success_ratio(Self) -> Double
+pub fn ChannelStats::new() -> Self
+pub fn ChannelStats::packet_loss_ratio(Self) -> Double
+
+pub(all) struct TransmissionEvent {
+  frame_id : UInt
+  frame_bytes : Bytes
+  sender_id : UInt
+  receiver_id : UInt
+  send_timestamp_ms : UInt64
+  deliver_timestamp_ms : UInt64
+  is_corrupted : Bool
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
