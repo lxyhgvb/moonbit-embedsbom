@@ -1,0 +1,53 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-radioframe/src/integrity"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn compute_internet_checksum(Bytes) -> UInt
+
+pub fn compute_xor_checksum(Bytes) -> Byte
+
+pub fn inject_bit_flip(Bytes, Int, Int) -> Bytes
+
+pub fn inject_burst_error(Bytes, Int, Int) -> Bytes
+
+pub fn verify_frame_checksum(Bytes, UInt) -> IntegrityReport
+
+// Errors
+
+// Types and methods
+pub(all) struct CRC16 {
+  poly : UInt
+  initial_seed : UInt
+} derive(Eq, @debug.Debug)
+pub fn CRC16::calculate_bitwise(Self, Bytes) -> UInt
+pub fn CRC16::ccitt_kermit() -> Self
+pub fn CRC16::ccitt_standard() -> Self
+pub fn CRC16::compute_ieee802154_fcs(Bytes) -> UInt
+
+pub(all) struct CRC32 {
+  poly : UInt
+} derive(Eq, @debug.Debug)
+pub fn CRC32::calculate(Self, Bytes) -> UInt
+pub fn CRC32::standard() -> Self
+
+pub(all) enum FrameIntegrityStatus {
+  Valid
+  ChecksumMismatch(UInt, UInt)
+  LengthMismatch(Int, Int)
+  InvalidHeader
+  CorruptedPayload
+} derive(Eq, @debug.Debug)
+
+pub(all) struct IntegrityReport {
+  status : FrameIntegrityStatus
+  error_bit_count : Int
+  details : String
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
