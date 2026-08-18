@@ -1,0 +1,5 @@
+import {
+  "lxyhgvb/moonbit-radioframe/src/cli",
+}
+
+pkgtype(kind: "executable")
