@@ -1,0 +1,33 @@
+name: MoonBit RadioFrame CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup MoonBit Toolchain
+        uses: moonbitlang/setup-moonbit@v1
+
+      - name: Verify Code Formatting
+        run: moon fmt
+
+      - name: Update Interface Definitions
+        run: moon info
+
+      - name: Strict Type Checking & Linting
+        run: moon check --deny-warn
+
+      - name: Execute Unit & Integration Test Suite
+        run: moon test
+
+      - name: Run Executable CLI Demo
+        run: moon run cmd/main

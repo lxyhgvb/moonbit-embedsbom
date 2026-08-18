@@ -1,129 +1,173 @@
-# MoonBit 嵌入式软件物料清单工具 (moonbit-embedsbom)
+# MoonBit RadioFrame (`moonbit-radioframe`)
 
-[![MoonBit Toolchain](https://img.shields.io/badge/MoonBit-0.10.x-blue.svg)](https://www.moonbitlang.cn/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](LICENSE)
-[![CI Check](https://github.com/lxyhgvb/moonbit-embedsbom/actions/workflows/check.yml/badge.svg)](https://github.com/lxyhgvb/moonbit-embedsbom/actions/workflows/check.yml)
-[![Test Suite](https://github.com/lxyhgvb/moonbit-embedsbom/actions/workflows/test.yml/badge.svg)](https://github.com/lxyhgvb/moonbit-embedsbom/actions/workflows/test.yml)
-
-**`moonbit-embedsbom`** 是基于 **MoonBit** 原生构建的面向嵌入式固件与硬件系统的专业软件物料清单（Software Bill of Materials, SBOM）生成、审计与深度合规分析工具。
-
-不同于传统通用 SBOM 工具，`moonbit-embedsbom` 专为嵌入式电子系统与物联网固件场景设计，深度追踪 MCU/CPU 硬件架构、Bootloader 版本、硬件板卡型号、交叉编译目标、内存占用比率以及固件二进制校验和，支持标准化 **SPDX 2.3 JSON** 与 **CycloneDX 1.5 JSON** 导出。
+> **MoonBit 无线通信帧与链路仿真工具包**
+> A modular, high-performance MoonBit toolkit for low-power wireless frame encoding/decoding (IEEE 802.15.4 specifications), bit-level packing, MAC address filtering, FCS checksum verification, in-memory channel impairment simulation, CSMA/CA backoff, and radio energy tracking.
 
 ---
 
-## 🌟 核心特性与特色
+## 📖 Overview
 
-1. **嵌入式领域专有字段挂载**：
-   - 支持 MCU/CPU 架构定义（ARM Cortex-M4/M7, RISC-V RV32IMC, ESP32-S3/Xtensa 等）。
-   - 追踪 Bootloader 版本（MCUBoot, U-Boot 等）、固件版本与交叉编译目标 triple（如 `thumbv7em-none-eabihf`）。
-   - 固件 Memory Footprint 计算（Flash KB 与 RAM KB 利用率计算）。
-   - 10+ 种主流 MCU 芯片硬件 Catalog（STM32, ESP32, nRF52, RP2040/2350, CH32V 等）。
-   - 硬件板卡型号标识与二进制摘要校验和（SHA-256, CRC32）。
+`moonbit-radioframe` provides an end-to-end framework for modeling, encoding, analyzing, and simulating low-power wireless communication protocols in pure MoonBit. 
 
-2. **多源依赖解析与清单导入**：
-   - 原生解析 MoonBit 工程 `moon.mod`、`moon.mod.json` 与 `moon.lock` 锁定文件。
-   - 解析 C/C++ 硬件 BSP 驱动、RTOS 内核（FreeRTOS, Zephyr, RT-Thread）与固件 spec 配置文件及 C 头文件 `#define` 宏定义。
-
-3. **依赖图引擎与 Tarjan 环检测**：
-   - 构建高效率 Directed Dependency Graph（邻接表与反向索引）。
-   - 内置 Tarjan / DFS 强连通环检测算法，精准定位循环依赖路径。
-   - 多版本重复组件检测与拓扑最短路径求解。
-
-4. **合规审计与 CVE 安全漏洞匹配**：
-   - 许可证合规矩阵与企业级策略规则引擎（检测 GPL-3.0 强 Copyleft 许可证在闭源/商业固件中的违规包含）。
-   - 版本格式规范检查（Linter）。
-   - 嵌入式 CVE 安全漏洞数据库匹配、CVSS v3.1 Vector 解析与修复建议提示。
-
-5. **标准化与多格式导出器**：
-   - **SPDX 2.3 JSON** 导出器（符合 Linux Foundation SPDX 规范）。
-   - **CycloneDX 1.5 JSON** 导出器（符合 OWASP CycloneDX 规范）。
-   - **Standalone HTML Report**（包含 CSS 样式的可视化独立 HTML SBOM 报告）。
-   - **Markdown Audit Report**（生成可读的 Markdown 完整审计报告）。
-   - **ASCII Graph Tree** 终端控制台树状图渲染与 CSV Table 电子表格导出。
-   - **JSON Schema Generator**（生成 SPDX 2.3 与 CycloneDX 1.5 JSON Schema 规范校验文档）。
+Designed without hard dependencies on physical microcontrollers or hardware drivers, `moonbit-radioframe` serves as an experimental, educational, and testing infrastructure for MoonBit IoT protocols, wireless networking research, and Link-layer simulation.
 
 ---
 
-## 📁 目录结构与架构设计
+## 🌟 Key Features
 
+1. **Bitstream Engine (`src/bitstream`)**:
+   - High-throughput `BitReader` and `BitWriter` supporting MSB-first and LSB-first bit orders.
+   - Arbitrary bit-width integer field packing (1-64 bits) and non-byte-aligned slice operations.
+   - Precise bit position manipulation, boundary checks, and alignment flushing.
+
+2. **IEEE 802.15.4 Frame Codec (`src/frame`)**:
+   - 16-bit Frame Control Field (FCF) parser and builder (Beacon, Data, ACK, MAC Cmd).
+   - Addressing mode codecs (None, 16-bit Short, 64-bit Extended, 0xFFFF Broadcast).
+   - PAN ID compression logic and auxiliary security header serialization.
+
+3. **Integrity & Diagnostics (`src/integrity`)**:
+   - IEEE 802.15.4 16-bit FCS CRC16-CCITT calculation.
+   - CRC32 checksum engine for extended frame headers.
+   - RFC 1071 16-bit Internet checksum & XOR parity checksums.
+   - Automated frame corruption diagnostics and bit-flip / burst error injectors.
+
+4. **MAC Filtering Engine (`src/filter`)**:
+   - Promiscuous mode, local PAN ID validation, short/extended destination filtering, and broadcast handling.
+
+5. **MAC Protocol Layer (`src/mac`)**:
+   - Slotted/Unslotted CSMA/CA backoff simulator with dynamic exponent scaling.
+   - Sequence-tracked ACK generation and timeout manager.
+   - Retransmission stats collector and exponential retry handler.
+
+6. **Channel Impairment Simulator (`src/channel`)**:
+   - In-memory link simulator with configurable packet loss rate (PPM), latency distribution, jitter, duplication, and temporal collision detection windows.
+
+7. **Network Graph & Topology (`src/topology`)**:
+   - 3D spatial node positioning (`Position3D`) and link distance calculation.
+   - Friis Free-Space and Log-Distance Path Loss models.
+   - Received Signal Strength Indicator (RSSI dBm) and Link Quality Indicator (LQI 0-255) calculators.
+
+8. **Radio Energy Model (`src/energy`)**:
+   - Low-power radio energy state machine (Sleep, Idle/Listen, TX, RX, CCA).
+   - Charge (mAh), energy (Joules), and estimated battery life model (e.g. for CC2530 transceivers).
+
+9. **CLI & Diagnostics (`src/cli`, `cmd/main`)**:
+   - Hexadecimal frame parsing and summary formatting.
+   - Automated link simulation runner and statistical telemetry exporter.
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    SubApp[cmd/main Executable CLI] --> CLI[src/cli Toolkit]
+    CLI --> Frame[src/frame 802.15.4 Codec]
+    CLI --> Channel[src/channel Link Simulator]
+    CLI --> Energy[src/energy Radio Profile]
+    
+    Channel --> Integrity[src/integrity FCS & CRC]
+    Channel --> Filter[src/filter MAC Filter]
+
+    MAC[src/mac CSMA/CA & ACK] --> Frame
+    Topology[src/topology RSSI & Path Loss] --> Channel
+
+    Frame --> Bitstream[src/bitstream BitReader/BitWriter]
+    Integrity --> Bitstream
 ```
-moonbit-embedsbom/
-├── moon.mod                 # MoonBit 模块描述文件
-├── README.md                # 项目指南与 OSC2026 自检表
-├── LICENSE                  # Apache-2.0 开源协议
-├── .github/
-│   └── workflows/
-│       ├── check.yml        # CI 格式化与编译检查 (moon fmt/info/check)
-│       └── test.yml         # 多平台单元测试与覆盖率报告 (Linux, macOS, Windows)
-├── src/
-│   ├── types/               # 核心领域数据模型 (Component, EmbeddedInfo, License, Vulnerability, SbomDocument, HardwareCatalog)
-│   ├── utils/               # JSON AST 序列化器、字符串辅助工具、CRC32/SHA256 校验和
-│   ├── parser/              # 依赖与固件清单解析器 (moon.mod, moon.pkg, moon.lock, 嵌入式 CSV/KV, C Header Parser)
-│   ├── graph/               # 依赖图引擎 (邻接图、Tarjan 环检测、路径求解、图统计)
-│   ├── analyzer/            # 合规与漏洞审计 (许可证矩阵、策略引擎、版本 Linter、CVE 匹配、CVSS Vector)
-│   ├── exporter/            # 多格式导出器 (SPDX 2.3, CycloneDX 1.5, HTML, Markdown, ASCII Graph, CSV, JSON Schema)
-│   └── cli/                 # CLI 命令行处理 (scan, licenses, graph, validate, export, version, help)
-├── test/                    # 端到端集成测试套件
-└── cmd/
-    └── main/                # 可执行程序入口
+
+---
+
+## 🛠️ Package Layout
+
+| Package Path | Description |
+| :--- | :--- |
+| [`src/bitstream`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/src/bitstream) | Bit-level stream reader, writer, alignment & endianness helpers |
+| [`src/integrity`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/src/integrity) | CRC16-CCITT, CRC32, checksums and error diagnostic tools |
+| [`src/frame`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/src/frame) | IEEE 802.15.4 MAC frame structure, FCF and bitstream codec |
+| [`src/filter`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/src/filter) | Destination MAC address and PAN ID filter engine |
+| [`src/mac`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/src/mac) | CSMA/CA backoff simulator, ACK manager, and retry stats |
+| [`src/channel`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/src/channel) | In-memory channel model for loss, delay, jitter, and collision |
+| [`src/topology`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/src/topology) | 3D Node graph, Friis path loss model, RSSI & LQI calculators |
+| [`src/energy`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/src/energy) | Low-power radio energy state machine and battery estimation |
+| [`src/cli`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/src/cli) | Hex codec, frame summary formatter, and CLI simulation reporter |
+| [`cmd/main`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/cmd/main) | Main CLI application entry point |
+| [`test`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/test) | End-to-end integration test suite |
+
+---
+
+## ⚡ Quick Start & Examples
+
+### 1. Encode & Decode IEEE 802.15.4 MAC Frame
+
+```moonbit
+let fcf = @frame.FrameControlField::new(
+  frame_type=Data,
+  ack_request=true,
+  pan_id_compression=true,
+  dest_addr_mode=Short16,
+  src_addr_mode=Short16,
+)
+let header : @frame.MacFrameHeader = {
+  fcf,
+  seq_num: 42,
+  dest_pan_id: Some(0x1234U),
+  dest_addr: @frame.MacAddress::ShortAddress(0x0001U),
+  src_pan_id: Some(0x1234U),
+  src_addr: @frame.MacAddress::ShortAddress(0x0002U),
+  aux_sec: None,
+}
+let payload = Bytes::from_array([ (0x48).to_byte(), (0x69).to_byte() ])
+let frame = @frame.MacFrame::new(header, payload)
+
+// Serialize to byte array with FCS checksum
+let encoded_bytes = @frame.encode_mac_frame(frame).unwrap()
+
+// Deserialize back to structured MAC frame
+let decoded_frame = @frame.decode_mac_frame(encoded_bytes).unwrap()
 ```
 
----
+### 2. Run In-Memory Channel Simulation
 
-## 📊 MoonBit 源码规模与来源声明
+```moonbit
+let ch_config = @channel.ChannelConfig::typical_iot()
+let sim = @channel.ChannelSimulator::new(ch_config)
 
-- **代码规模**：工程基于 **MoonBit 0.10.x** 原生开发，包含 56 个手写 `.mbt` 源文件，手写源码规模达 **4,398 行**（非空行 `4,105 行`，已严格排除 `_build/` 编译产物与 `.mbti` 描述文件），完全符合比赛要求。
-- **开源声明**：本仓库 `moonbit-embedsbom` 所有 MoonBit 代码均为参赛者 **100% 原创编写**，面向 2026 CCF / MoonBit 国产基础软件开源生态贡献赛制作，无第三方合规与版权风险。
+let payload = Bytes::from_array([(0x01).to_byte(), (0x02).to_byte()])
+let outcome = sim.transmit_bytes(payload, 1U, 2U, 1000UL)
 
----
+// Advance simulation time
+let delivered = sim.step(1010UL)
+```
 
-## 🛠️ 快速开始与使用指南
-
-### 1. 构建与测试
-
-需要安装最新版 MoonBit 工具链（0.10.x）：
+### 3. Run Executable CLI Demo
 
 ```bash
-# 校验工程语法与类型
+moon run cmd/main
+```
+
+---
+
+## 🧪 Verification & Building
+
+Run all strict checks and test suites:
+
+```bash
+# Format MoonBit source code
+moon fmt
+
+# Regenerate package interfaces (.mbti)
+moon info
+
+# Run strict type checking and linting
 moon check --deny-warn
 
-# 运行完整单元测试与集成测试
-moon test --deny-warn
-
-# 检查代码格式
-moon fmt --check
-
-# 生成接口描述信息
-moon info
-```
-
-### 2. CLI 命令行使用
-
-```bash
-# 1. 扫描当前 MoonBit / 嵌入式项目并导出 SPDX 2.3 JSON
-moon run cmd/main -- scan -i moon.mod -f spdx -a cortex-m4 -b STM32F407G-DISC1
-
-# 2. 导出 CycloneDX 1.5 JSON 格式
-moon run cmd/main -- scan -i moon.mod -f cyclonedx
-
-# 3. 运行许可证合规审计
-moon run cmd/main -- licenses
-
-# 4. 打印依赖树状图与环检测
-moon run cmd/main -- graph
-
-# 5. 执行完整 SBOM 校验
-moon run cmd/main -- validate
+# Execute unit and integration tests
+moon test
 ```
 
 ---
 
-## 📋 OSC2026 参赛自检表 (Self-Inspection Checklist)
+## 📄 License
 
-- [x] **开源协议与文件规范**：包含标准 Apache-2.0 `LICENSE` 文件与结构清晰的 `README.md`。
-- [x] **Git 远端仓库支持**：在 GitHub (`lxyhgvb/moonbit-embedsbom`) 和 GitLink 完成远端仓库建立与推送。
-- [x] **唯一真实贡献者**：设置正确的 Git `user.name` 与 `user.email`（匹配账号 `lxyhgvb`），确保**无虚拟贡献者**。
-- [x] **有效提交历史**：提交历史包含 10 次以上递进式、有意义的提交（Commit History >= 10）。
-- [x] **CI 工作流完整**：配置 `.github/workflows/check.yml` 和 `.github/workflows/test.yml`，通过 3 端 CI 检查。
-- [x] **代码质量与警告**：通过最新工具链 `moon fmt --deny-warn` 和 `moon check --deny-warn` 零警告标准。
-- [x] **代码规模合规**：剔除 `_build/` 编译中间产物后，手写 MoonBit 源码达到 **4,398 行**（非空行 4,105 行），真实合规无虚报。
+Distributed under the **Apache-2.0** License. See [`LICENSE`](file:///d:/%E6%9D%8E%E6%AC%A3%E6%80%A1%E5%88%9D%E5%AE%A12/LICENSE) for details.
