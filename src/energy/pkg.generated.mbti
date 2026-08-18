@@ -1,0 +1,46 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-radioframe/src/energy"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct EnergyTracker {
+  mut sleep_duration_ms : Double
+  mut idle_duration_ms : Double
+  mut tx_duration_ms : Double
+  mut rx_duration_ms : Double
+  mut cca_duration_ms : Double
+} derive(Eq, @debug.Debug)
+pub fn EnergyTracker::add_duration(Self, RadioState, Double) -> Unit
+pub fn EnergyTracker::estimate_battery_lifetime_days(Self, RadioProfile, Double) -> Double
+pub fn EnergyTracker::new() -> Self
+pub fn EnergyTracker::total_charge_mah(Self, RadioProfile) -> Double
+pub fn EnergyTracker::total_energy_joules(Self, RadioProfile) -> Double
+
+pub(all) struct RadioProfile {
+  sleep_current_ma : Double
+  idle_current_ma : Double
+  tx_current_ma : Double
+  rx_current_ma : Double
+  cca_current_ma : Double
+  supply_voltage_v : Double
+} derive(Eq, @debug.Debug)
+pub fn RadioProfile::cc2530_default() -> Self
+
+pub(all) enum RadioState {
+  Sleep
+  IdleListen
+  Transmit
+  Receive
+  Cca
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
