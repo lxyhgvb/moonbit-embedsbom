@@ -1,0 +1,38 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-radioframe/src/filter"
+
+import {
+  "lxyhgvb/moonbit-radioframe/src/frame",
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub(all) struct AddressFilter {
+  config : AddressFilterConfig
+} derive(Eq, @debug.Debug)
+pub fn AddressFilter::evaluate_header(Self, @frame.MacFrameHeader) -> FilterDecision
+pub fn AddressFilter::new(AddressFilterConfig) -> Self
+
+pub(all) struct AddressFilterConfig {
+  local_pan_id : UInt
+  local_short_addr : UInt
+  local_ext_addr : UInt64
+  promiscuous_mode : Bool
+  allow_broadcast : Bool
+} derive(Eq, @debug.Debug)
+pub fn AddressFilterConfig::default() -> Self
+
+pub(all) enum FilterDecision {
+  Accept
+  RejectPanMismatch(UInt, UInt)
+  RejectAddressMismatch
+  RejectDisabled
+} derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
