@@ -1,0 +1,66 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "lxyhgvb/moonbit-radioframe/src/mac"
+
+import {
+  "lxyhgvb/moonbit-radioframe/src/frame",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn build_ack_frame(Int) -> @frame.MacFrame
+
+// Errors
+
+// Types and methods
+pub(all) struct AckManager {
+  timeout_ms : UInt64
+  pending : Array[PendingAck]
+} derive(Eq, @debug.Debug)
+pub fn AckManager::get_expired_acks(Self, UInt64) -> Array[Int]
+pub fn AckManager::new(timeout_ms? : UInt64) -> Self
+pub fn AckManager::process_ack(Self, Int) -> Bool
+pub fn AckManager::track_sent_frame(Self, Int, UInt64) -> Unit
+
+pub(all) struct CsmaParams {
+  min_be : Int
+  max_be : Int
+  max_csma_backoffs : Int
+  max_frame_retries : Int
+} derive(Eq, @debug.Debug)
+pub fn CsmaParams::default() -> Self
+
+pub(all) enum CsmaResult {
+  ChannelClear(Int)
+  ChannelBusy(Int)
+  BackoffExceeded
+  MaxRetriesExceeded
+} derive(Eq, @debug.Debug)
+
+pub(all) struct CsmaState {
+  mut be : Int
+  mut nb : Int
+  mut retries : Int
+} derive(Eq, @debug.Debug)
+pub fn CsmaState::new(CsmaParams) -> Self
+pub fn CsmaState::perform_backoff_step(Self, CsmaParams, Bool, UInt) -> CsmaResult
+pub fn CsmaState::reset(Self, CsmaParams) -> Unit
+
+pub(all) struct PendingAck {
+  seq_num : Int
+  timestamp_ms : UInt64
+  retry_count : Int
+} derive(Eq, @debug.Debug)
+
+pub(all) struct RetryStats {
+  mut total_transmissions : Int
+  mut successful_deliveries : Int
+  mut dropped_frames : Int
+  mut total_retries : Int
+} derive(Eq, @debug.Debug)
+pub fn RetryStats::new() -> Self
+pub fn RetryStats::record_failure(Self, Int) -> Unit
+pub fn RetryStats::record_success(Self, Int) -> Unit
+
+// Type aliases
+
+// Traits
